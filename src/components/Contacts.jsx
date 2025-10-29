@@ -1,53 +1,133 @@
-import { useState } from "react";
+import React, { useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 
 function Contacts() {
+  const [contacts, setContacts] = useState([]);
   const [contact, setContact] = useState({
     name: "",
-    lastName: "",
     email: "",
     phone: "",
+    address: "",
   });
-  const changeHandeler = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
-    setContact((contact) => ({ ...contact, [name]: value }));
+
+  // آرایه مشخصات input ها
+  const inputs = [
+    { name: "name", type: "text", placeholder: "Name" },
+    { name: "email", type: "email", placeholder: "Email" },
+    { name: "phone", type: "tel", placeholder: "Phone" },
+    { name: "address", type: "text", placeholder: "Address" },
+  ];
+
+  // یک Event Handler برای همه input ها
+  const changeHandler = (e) => {
+    const { name, value } = e.target;
+    setContact((prev) => ({ ...prev, [name]: value }));
   };
-  const addHandeler = () => {};
+
+  const handleAddContact = (e) => {
+    e.preventDefault();
+    // بررسی پر بودن همه فیلدها
+    for (let key in contact) {
+      if (!contact[key]) {
+        alert("لطفاً همه فیلدها را پر کنید!");
+        return;
+      }
+    }
+    const newContact = { id: uuidv4(), ...contact };
+    setContacts((prev) => [...prev, newContact]);
+    setContact({ name: "", email: "", phone: "", address: "" });
+  };
+
   return (
     <div>
-      <div>
-        <input
-          type="text"
-          name="name"
-          placeholder="Name"
-          value={contact.name}
-          onChange={changeHandeler}
-        />
-        <input
-          type="text"
-          name="lastName"
-          placeholder="Last Name"
-          value={contact.lastName}
-          onChange={changeHandeler}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Email"
-          value={contact.email}
-          onChange={changeHandeler}
-        />
-        <input
-          type="number"
-          name="phone"
-          placeholder="Phone"
-          value={contact.phone}
-          onChange={changeHandeler}
-        />
-        <button onClick={addHandeler}> add contact</button>
-      </div>
+      <h3>Contactlist</h3>
+      <form onSubmit={handleAddContact}>
+        {inputs.map((input, index) => (
+          <input
+            key={index}
+            type={input.type}
+            placeholder={input.placeholder}
+            name={input.name}
+            value={contact[input.name]}
+            onChange={changeHandler}
+          />
+        ))}
+        <button type="submit">Add Contact</button>
+      </form>
+
+      <ul>
+        {contacts.map((c) => (
+          <li key={c.id}>
+            {c.name} | {c.email} | {c.phone} | {c.address}
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }
 
 export default Contacts;
+
+// import { useState } from "react";
+// import Contactlist from "./Contactlist";
+// import inputs from "../constants/inputs";
+// import { v4 as uuidv4 } from "uuid";
+
+// function Contacts() {
+//   const [alert, setAlert] = useState("");
+//   const [contacts, setContacts] = useState([]);
+//   const [contact, setContact] = useState({
+//     id: "",
+//     name: "",
+//     lastName: "",
+//     email: "",
+//     phone: "",
+//   });
+//   const changeHandler = (event) => {
+//     const name = event.target.name;
+//     const value = event.target.value;
+//     setContact((contact) => ({ ...contact, [name]: value }));
+//   };
+//   const addHandler = () => {
+//     if (
+//       !contact.name ||
+//       !contact.lastName ||
+//       !contact.email ||
+//       !contact.phone
+//     ) {
+//       setAlert("please");
+//       return;
+//     }
+//     setAlert();
+//     const newContact = { ...contact, id: v4() };
+//     setContacts((contacts) => [...contacts, newContact]);
+//     setContact({
+//       name: "",
+//       lastName: "",
+//       email: "",
+//       phone: "",
+//     });
+//   };
+
+//   return (
+//     <div>
+//       <div>
+//         {inputs.map((input, index) => (
+//           <input
+//             key={index}
+//             type={input.type}
+//             placeholder={input.placeholder}
+//             name={input.name}
+//             value={contact[input.name]}
+//             onChange={changeHandler}
+//           />
+//         ))}
+//         ; <button onClick={addHandler}> add contact</button>
+//       </div>
+//       <div>{alert && <p>{alert}</p>}</div>
+//       <Contactlist contacts={contacts} />
+//     </div>
+//   );
+// }
+
+// export default Contacts;
