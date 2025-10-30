@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import inputs from "../constants/inputs";
 import ContactsList from "./ContactsList";
+import styles from "./Contacts.module.css";
 function Contacts() {
   const [alert, setAlert] = useState("");
   const [contacts, setContacts] = useState([]);
@@ -51,9 +52,9 @@ function Contacts() {
   };
 
   return (
-    <div>
+    <div className={styles.container}>
       <h3>Contactlist</h3>
-      <form onSubmit={handleAddContact}>
+      <form onSubmit={handleAddContact} className={styles.form}>
         {inputs.map((input, index) => (
           <input
             key={index}
@@ -66,7 +67,7 @@ function Contacts() {
         ))}
         <button type="submit">Add Contact</button>
       </form>
-      <div>{alert && <p>{alert}</p>}</div>
+      <div className={styles.alert}>{alert && <p>{alert}</p>}</div>
       <ContactsList contacts={contacts} deleteHandler={deleteHandler} />
     </div>
   );
