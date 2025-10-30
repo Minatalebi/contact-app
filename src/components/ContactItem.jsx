@@ -1,5 +1,8 @@
 import React from "react";
-function ContactItem({ data: { id, name, address, email, phone } }) {
+function ContactItem({
+  data: { id, name, address, email, phone },
+  deleteHandler,
+}) {
   return (
     <li key={id}>
       <p>
@@ -13,7 +16,7 @@ function ContactItem({ data: { id, name, address, email, phone } }) {
         <span>phone icon</span>
         {phone}
       </p>
-      <button>trash</button>
+      <button onClick={() => deleteHandler(id)}>trash</button>
     </li>
   );
 }
