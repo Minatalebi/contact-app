@@ -41,7 +41,7 @@ function Contacts() {
       return;
     }
     setAlert();
-    const newContact = { id: uuidv4(), ...contact };
+    const newContact = { ...contact, id: uuidv4() };
     setContacts((prev) => [...prev, newContact]);
     setContact({ name: "", email: "", phone: "", address: "" });
   };
