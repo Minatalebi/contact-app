@@ -53,7 +53,6 @@ function Contacts() {
 
   return (
     <div className={styles.container}>
-      <h3>Contactlist</h3>
       <form onSubmit={handleAddContact} className={styles.form}>
         {inputs.map((input, index) => (
           <input
