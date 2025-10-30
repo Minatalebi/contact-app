@@ -1,9 +1,12 @@
 import React, { useState } from "react";
 import { v4 as uuidv4 } from "uuid";
-
+import inputs from "../constants/inputs";
+import ContactsList from "./ContactsList";
 function Contacts() {
+  const [alert, setAlert] = useState("");
   const [contacts, setContacts] = useState([]);
   const [contact, setContact] = useState({
+    id: "",
     name: "",
     email: "",
     phone: "",
@@ -11,12 +14,12 @@ function Contacts() {
   });
 
   // آرایه مشخصات input ها
-  const inputs = [
-    { name: "name", type: "text", placeholder: "Name" },
-    { name: "email", type: "email", placeholder: "Email" },
-    { name: "phone", type: "tel", placeholder: "Phone" },
-    { name: "address", type: "text", placeholder: "Address" },
-  ];
+  // const inputs = [
+  //   { name: "name", type: "text", placeholder: "Name" },
+  //   { name: "email", type: "email", placeholder: "Email" },
+  //   { name: "phone", type: "tel", placeholder: "Phone" },
+  //   { name: "address", type: "text", placeholder: "Address" },
+  // ];
 
   // یک Event Handler برای همه input ها
   const changeHandler = (e) => {
@@ -27,12 +30,17 @@ function Contacts() {
   const handleAddContact = (e) => {
     e.preventDefault();
     // بررسی پر بودن همه فیلدها
-    for (let key in contact) {
-      if (!contact[key]) {
-        alert("لطفاً همه فیلدها را پر کنید!");
-        return;
-      }
+    // for (let key in contact) {
+    //   if (!contact[key]) {
+    //     alert("لطفاً همه فیلدها را پر کنید!");
+    //     return;
+    //   }
+    // }
+    if (!contact.name || !contact.address || !contact.email || !contact.phone) {
+      setAlert("please");
+      return;
     }
+    setAlert();
     const newContact = { id: uuidv4(), ...contact };
     setContacts((prev) => [...prev, newContact]);
     setContact({ name: "", email: "", phone: "", address: "" });
@@ -54,14 +62,8 @@ function Contacts() {
         ))}
         <button type="submit">Add Contact</button>
       </form>
-
-      <ul>
-        {contacts.map((c) => (
-          <li key={c.id}>
-            {c.name} | {c.email} | {c.phone} | {c.address}
-          </li>
-        ))}
-      </ul>
+      <div>{alert && <p>{alert}</p>}</div>
+      <ContactsList contacts={contacts} />
     </div>
   );
 }
