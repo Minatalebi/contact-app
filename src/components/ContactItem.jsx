@@ -1,23 +1,34 @@
 import React from "react";
 import styles from "./ContactItem.module.css";
+import { FaTrash } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
+import { FaPhoneAlt } from "react-icons/fa";
+
 function ContactItem({
-  data: { id, name, address, email, phone },
+  data: { id, firstName, lastName, email, phone },
   deleteHandler,
 }) {
   return (
     <li className={styles.item}>
       <p>
-        {name} {address}
+        {firstName} {lastName}
       </p>
       <p>
-        <span>email icon</span>
+        <span>
+          <MdEmail />
+        </span>
         {email}
       </p>
       <p>
-        <span>phone icon</span>
+        <span>
+          <FaPhoneAlt />
+        </span>
         {phone}
       </p>
-      <button onClick={() => deleteHandler(id)}>trash</button>
+      <button onClick={() => deleteHandler(id)}>
+        <FaTrash />
+      </button>
+      <button onClick={() => props.onEdit(contact)}>Edit</button>
     </li>
   );
 }
